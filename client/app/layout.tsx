@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
-// These styles apply to every route in the application
-import './globals.css'
+import { Providers } from "./providers";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 
+import "./styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Liberate",
-  description: "liberate app",
+  description: "A Mindful Brain",
 };
 
 export default function RootLayout({
@@ -17,14 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Navbar />
-      {/* <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body> */}
-       <main className="flex-grow p-4">{children}</main>
-      <Footer />
+      <body>
+        {/* <Providers> */}
+          <Navbar />
+          <main style={{ minHeight: "80vh" }}>{children}</main>
+          {/* Potential <Footer /> */}
+        {/* </Providers> */}
+      </body>
     </html>
   );
 }

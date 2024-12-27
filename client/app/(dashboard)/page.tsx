@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../.././lib/firebase";
+import { auth } from "../lib/firebase";
 import Link from "next/link";
 
 export default function DashboardPage() {

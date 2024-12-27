@@ -1,82 +1,71 @@
-"use client";
-
+import Image from "next/image";
 import Link from "next/link";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./lib/firebase";
-import { signOut } from "firebase/auth";
 
 export default function Home() {
-  const [user] = useAuthState(auth);
-
-  const handleLogout = async () => {
-    await signOut(auth);
-  };
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-center">
-      <div className="bg-white p-8 rounded shadow-lg max-w-md w-full">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Liberate</h1>
-        <p className="text-lg mb-6">
-          Empower your mind, reflect deeply, and connect with others.
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        <Image
+          className="dark:invert"
+          src="/logo.JPG"
+          alt="Liberate logo"
+          width={180}
+          height={38}
+          priority
+        />
+        <h1 className="text-4xl font-bold">Welcome to Liberate</h1>
+        <p className="text-center text-lg sm:text-left">
+          Your journey to mental clarity, resilience, and self-discovery begins
+          here.
         </p>
 
-        {!user ? (
-          // Show signup/login links if not logged in
-          <div className="flex justify-center space-x-4">
-            <Link
-              href="/signup"
-              className="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600"
-            >
-              Get Started
-            </Link>
-            <Link
-              href="/login"
-              className="bg-gray-500 text-white px-6 py-3 rounded hover:bg-gray-600"
-            >
-              Log In
-            </Link>
-          </div>
-        ) : (
-          // Show navigation links if logged in
-          <div>
-            <h2 className="text-2xl font-semibold mb-4">
-              Welcome back, {user.email}!
-            </h2>
-            <div className="flex flex-col space-y-4">
-              <Link
-                href="/journal"
-                className="bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600"
-              >
-                Reflective Journaling
-              </Link>
-              <Link
-                href="/mood-tracker"
-                className="bg-purple-500 text-white px-6 py-3 rounded hover:bg-purple-600"
-              >
-                Mood Tracker
-              </Link>
-              <Link
-                href="/forum"
-                className="bg-yellow-500 text-white px-6 py-3 rounded hover:bg-yellow-600"
-              >
-                Cultural Storytelling Forum
-              </Link>
-              <Link
-                href="/challenge"
-                className="bg-red-500 text-white px-6 py-3 rounded hover:bg-red-600"
-              >
-                Growth Challenges
-              </Link>
-            </div>
-            <button
-              onClick={handleLogout}
-              className="mt-6 bg-gray-500 text-white px-6 py-3 rounded hover:bg-gray-600"
-            >
-              Log Out
-            </button>
-          </div>
-        )}
-      </div>
+        <div className="flex gap-4 items-center flex-col sm:flex-row">
+          <Link
+            href="/signup"
+            className="rounded-full border border-transparent transition-colors flex items-center justify-center bg-blue-600 text-white gap-2 hover:bg-blue-500 text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+          >
+            Get Started
+          </Link>
+          <Link
+            href="/login"
+            className="rounded-full border border-solid border-gray-300 transition-colors flex items-center justify-center hover:bg-gray-600 text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+          >
+            Login
+          </Link>
+        </div>
+      </main>
+      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
+        <a
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="https://easyvansh.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/globe.svg"
+            alt="Globe icon"
+            width={16}
+            height={16}
+          />
+          easyvansh
+        </a>
+        <a
+          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+          href="https://vercel.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            aria-hidden
+            src="/vercel.svg"
+            alt="Vercel logo"
+            width={16}
+            height={16}
+          />
+          Made by Vansh
+        </a>
+      </footer>
     </div>
   );
 }

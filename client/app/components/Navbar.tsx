@@ -1,33 +1,60 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { Box, Flex, Spacer, Button, Heading, Link as ChakraLink } from "@chakra-ui/react";
 import Link from "next/link";
+import { auth } from "../lib/firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const [user, setUser] = useState<any>(null);
   const pathname = usePathname();
 
-  const links = [
-    { name: "Dashboard", path: "/dashboard" },
-    { name: "Journal", path: "/journal" },
-    { name: "Mood Tracker", path: "/mood-tracker" },
-    { name: "Forum", path: "/forum" },
-    { name: "Challenges", path: "/challenge" },
-    { name: "Profile", path: "/profile" },
-  ];
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
+    return () => unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await signOut(auth);
+  };
 
   return (
-    <nav className="bg-blue-600 text-white p-4 flex justify-around">
-      {links.map((link) => (
-        <Link
-          key={link.name}
-          href={link.path}
-          className={`px-4 py-2 rounded ${
-            pathname === link.path ? "bg-blue-800" : "hover:bg-blue-500"
-          }`}
-        >
-          {link.name}
-        </Link>
-      ))}
-    </nav>
+    <Box bg="white" boxShadow="md" px={4} py={2}>
+      <Flex align="center">
+        <Heading as="h3" size="md">
+          <Link href="/">Liberate</Link>
+        </Heading>
+        <Spacer />
+        <Flex gap={4}>
+          {user ? (
+            <>
+              <Link href="/(dashboard)" passHref>
+                <ChakraLink color={pathname?.includes("/(dashboard)") ? "blue.500" : "gray.700"}>
+                  Dashboard
+                </ChakraLink>
+              </Link>
+              <Button variant="outline" colorScheme="blue" onClick={handleSignOut}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link href="/(auth)/login" passHref>
+                <ChakraLink color={pathname?.includes("/login") ? "blue.500" : "gray.700"}>
+                  Login
+                </ChakraLink>
+              </Link>
+              <Link href="/(auth)/signup" passHref>
+                <ChakraLink color={pathname?.includes("/signup") ? "blue.500" : "gray.700"}>
+                  Signup
+                </ChakraLink>
+              </Link>
+            </>
+          )}
+        </Flex>
+      </Flex>
+    </Box>
   );
 }
